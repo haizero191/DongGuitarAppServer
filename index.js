@@ -8,7 +8,7 @@ const cors = require('cors');
 const PORT = 4000;
 const fs = require('fs');
 const http = require('http');
-
+require('dotenv').config()
 
 
 // Cloud setting
@@ -67,7 +67,7 @@ route(app)
 // } )
 
 
-app.listen(PORT, function () {
+app.listen(process.env.PORT || 5000, function () {
   console.log(
   `
   -----------------------------------------------------------------
