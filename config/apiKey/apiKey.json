@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "cosmic-backbone-415105",
+  "private_key_id": "844af9f50fbc379a947bfdd69f6f193b805f7e73",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQC4hRA+neaJnMif\ncDHYkaqgnzBYUkVWT9dAQiMg2LcxCej6hQ1CLftXEVt8jRyf/phhCRTMxvTUbaZB\nrH1p8LApG02Je31SRByQt87I9LkM4ZfBZOD2wB0MXMxI22f+oZd/BYL9iGa7gcnH\nzmgugCu69keHPDoHW6fObTTQ6juss3TPtT0/a6eZCCPjS7Bwhmrbb54/iKhCqXpw\nmlGU8noTrL46+85wfLFBwFyQQ3yJjzISuSWWl9qVSF5L9Kn+8ffeOA7gFoVXLEI8\nBkyt55JNEOzsLfpGmOZAhcbKsA/hYEwXjUUjeLKZMPXGqffsrktICju/+LLPf6s6\nLzq2ddOLAgMBAAECggEATSkLpXunM4WWGaIznfIwDXH0KALjTtgdVZgyk2I8nOud\neuFXrYSH9Z1jCf8CaN9wvicrhQRvzkM6An2Mhlgpek8aCfNTcSrdXSEX/k3j8kCG\nEs/KCTVGEGzf2lmxr7fIH8xgvf+joiaAiCbGxyc+4jRpreIgDAKmdfqR2wkQQkOk\nVxKyJRi0s5ulDdR2a+FjQUqtgmXozBES5jPSIHzYo58u4QdReOdGfRsaQ6YVygS0\ndMiXahbVv8E4y9qreY3T8IfFfJVCNPTzcpv/c1/hEK2DDfOl1KGtp8yh9dNV4zqN\nN1zZBZZGGhB1Ar3g4ZPhAoF2RA3fLkPDzs0XwzMiDQKBgQDwMzYP1EyIGzujdd28\nPiUAqfVyi3dg4ti2Rn0NXaERP4bqMDxC1pkDZA4uXl0JIEIrfnYjnGSEPLQS8M96\nWpa7GElWoQc1T+XqzXHFlmNzGoxT3kODO/3x25iQpOc/S4LelfLIDPJm28WdOl70\nfd0z7G/8AHPd1hrVKiN7xx5MLQKBgQDEqD0DAIVz9fq3N+xKiMKi/GywRdn+7cxR\n90N0cRfw+OEFZOmHf48U6OeTbrGu2mBEz22r+KgrSEPhV5dcQ0Z2cAr+zm5II0TT\nERR9+xB+FHd1EorkhH+XdX2SkKd7wejDiOX50k7LHP0NwrYOwTtN7090y+1nhHwX\nJGMjAlCZlwKBgQCWeI5SZj03OlAm+yxXw1psywuuoP283P7DWO7304KWCoTa6jKl\n8EdUn3Zex9Biainpk0Qw1MUHLfvkraRb0qoANJukwCWC2TV/3Ql7rNVKAwSLeX4z\nlP5lZ5pwak1PEl++TpMTjUDA/MYT08AuSzaqU2BnrmTnQDv483fdD4TEVQKBgQC1\n+xFqg8L7CfcWMRPh7Shf9sMFY75VH+zhNLUhPb5v6X8hpL5N+waGzPfvAJJAQiiv\nxFuytgm488iM8KdKY58C3q/uF00KSEjaIIYcBoa+hWX92kjZKpt/puOrC11RMqGY\nwEhApBLx9kNdxn7+rGWauweGB2gLURgbujpbHTtExQKBgBfrn6q0v66mZqtM8OZ8\nH6BJoOYxrTqdJuLBTT6FKfK5zA6DGh7zFUA7YneMBkMBIrepQmcxikxsnkikqA2f\nmjrorn9pp1Fqm5o69fkueTb3hbhE6CfkuPqyuLLwX1dyG0/5g6vvhVPC1MKKs4BG\nnm5+p/QX6deTM23Cr/YNYJy2\n-----END PRIVATE KEY-----\n",
+  "client_email": "dongguitarsa@cosmic-backbone-415105.iam.gserviceaccount.com",
+  "client_id": "101101749334751084411",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/dongguitarsa%40cosmic-backbone-415105.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
