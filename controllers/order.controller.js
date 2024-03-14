@@ -13,22 +13,36 @@ const { uid } = require('uid');
 
 
 class OrderController {
-  //   index(req, res) {
-  //     Brand.find()
-  //       .sort("-CreatedAt")
-  //       .then((brand) => {
-  //         res.json(responseJSON("Get Brands success !", brand, true));
-  //       })
-  //       .catch((error) => {
-  //         console.log(error);
-  //         res.json(responseJSON("Get Brands had error ! ", [], false));
-  //       });
-  //   }
+    async index(req, res) {
+      var {status} = req.query
+      var query = {}
+
+      if(status) {
+        query = {
+          Status: { $regex: status, $options: "i" }
+        }
+      }
+
+      try {
+        var Get_Order_Result = await Order.find(query).sort("-CreatedAt").populate({
+          path: "Product",
+          select: "Name"
+        })
+        res.json(responseJSON("Get Orders success !", Get_Order_Result, true));
+      }
+      catch(error) {
+        console.log(error);
+        res.json(responseJSON("Get Orders had error ! ", [], false));
+      }
+    }
 
   async create(req, res) {
-    const order = new Order(req.body);
-    console.log(`DGT${uid().replace(/-/g, '').substring(0, 6).toUpperCase()}`)
-
+    var newOrder = req.body;
+    if ("Status" in newOrder) {
+      delete newOrder.Status;
+    }
+    
+    const order = new Order(newOrder);
     order.Code = `DGT${uid().replace(/-/g, '').substring(0, 6).toUpperCase()}`;
     
     const product = await Product.find({ _id: req.body.Product }).populate("Brand").populate("Category");
@@ -68,36 +82,35 @@ class OrderController {
   //     }
   //   }
 
-  //   async update(req, res) {
-  //     try {
-  //       const id = req.params.id;
-  //       const dataUpdate = req.body;
-
-  //       if (Object.keys(dataUpdate).length === 0) {
-  //         res.status(404).json({ success: false, error: "Data update is empty" });
-  //       } else {
-  //         Brand.findByIdAndUpdate(id, dataUpdate, { new: false })
-  //           .then((updateBrand) => {
-  //             if (!updateBrand) {
-  //               res
-  //                 .status(404)
-  //                 .json(responseJSON("Update brand failed !", null, false));
-  //             }
-  //             res.json(responseJSON("Brand update successfully", updateBrand, true));
-  //           })
-  //           .catch((error) => {
-  //             console.error("Error updating product", error);
-  //             res
-  //               .status(500)
-  //               .json(responseJSON("Have error !", null, false));
-  //           });
-  //       }
-  //     } catch (error) {
-  //       res
-  //         .status(201)
-  //         .json(responseJSON("Update brand failed !", null, false));
-  //     }
-  //   }
+    async update(req, res) {
+      try {
+        const id = req.params.id;
+        const dataUpdate = req.body;
+        console.log(dataUpdate)
+        if (Object.keys(dataUpdate).length === 0) {
+          res.status(404).json({ success: false, error: "Data update is empty" });
+        } else {
+          Order.findByIdAndUpdate(id, dataUpdate, { new: false })
+            .then((updateOrder) => {
+              if (!updateOrder) {
+                res
+                  .status(404)
+                  .json(responseJSON("Update order failed !", null, false));
+              }
+              res.json(responseJSON("Order update successfully", updateOrder, true));
+            })
+            .catch((error) => {
+              res
+                .status(500)
+                .json(responseJSON("Have error !", null, false));
+            });
+        }
+      } catch (error) {
+        res
+          .status(201)
+          .json(responseJSON("Update brand failed !", null, false));
+      }
+    }
 }
 
 module.exports = new OrderController();

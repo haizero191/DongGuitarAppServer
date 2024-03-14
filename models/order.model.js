@@ -16,8 +16,10 @@ const orderSchema = new mongoose.Schema({
     type: String,
     enum: ["Open", "Confirmed", "Paid", "Shipping" ,"Delivered" ,"Finished", "Canceled"],
     required: true,
+    default: "Open"
   },
   Code: { type: String, required: true },
+  IsReview: { type: Boolean, default: false },
   CreatedAt: { type: Date, default: Date.now },
 });
 

@@ -11,32 +11,48 @@ const Product_specs = require("../models/product_specs.model.js");
 
 class ProductController {
   async index(req, res) {
+
+    // init variables
     let { page, limit, filter } = req.query;
     let skip = 0;
+    var sortValue = {CreateAt : -1}
+
+    // Kiểm tra pagination
     if (page && limit) skip = (page - 1) * limit;
     else {
       page = 1;
       limit = 9;
     }
 
- 
 
-    if(filter && filter.search){
+
+    // Kiểm tra sort by
+    if (filter && filter.sortBy) {
+      if (filter.sortBy === "incs") {
+        sortValue['SellingPrice'] = 1
+      }
+      else if(filter.sortBy === "desc") {
+        sortValue['SellingPrice'] = -1
+      }
+    }
+
+
+    if (filter && filter.search) {
       try {
         var Search_Product_Result = await Product.find({
           Name: { $regex: filter.search, $options: "i" },
         })
-        .skip(skip).limit(limit)
-        .populate("Brand")
-        .populate("Category")
-        .populate("Images")
-        .populate("Product_specs")
-        if (Search_Product_Result){
+          .sort({...sortValue})
+          .skip(skip)
+          .limit(limit)
+          .populate("Brand")
+          .populate("Category")
+          .populate("Images")
+          .populate("Product_specs")
+        if (Search_Product_Result) {
           var Search_Count_Product_Result = await Product.find({
             Name: { $regex: filter.search, $options: "i" },
-          }).countDocuments()  
-          
-          
+          }).countDocuments();
           res.json({
             success: true,
             data: Search_Product_Result,
@@ -47,63 +63,72 @@ class ProductController {
               productCount: Search_Count_Product_Result,
             },
           });
-        }
-        else {
+        } else {
           res.json(responseJSON("Product find result: ", [], true));
         }
       } catch (error) {
         console.log(error);
         res.json(responseJSON("Product find had error: ", null, false));
       }
-    }
-    else if (filter) {
+    } else if (filter) {
       var query = {};
-      const brand = await Brand.find({ Name: { $in: filter.brand } })
-        .select("_id")
-        .lean();
-      const category = await Category.find({ Name: { $in: filter.category } })
-        .select("_id")
-        .lean();
 
-      // Handle filter query
-      if (filter.brand) query = { Brand: { $in: brand } };
-      if (filter.category) query = { Category: { $in: category } };
+      // Filter with only brand
+      if (filter.brand) {
+        const brand = await Brand.find({ Name: { $in: filter.brand } })
+          .select("_id")
+          .lean();
+        query = { Brand: { $in: brand } };
+      }
+
+      // Filter with only category
+      if (filter.category) {
+        const category = await Category.find({ Name: { $in: filter.category } })
+          .select("_id")
+          .lean();
+        if (filter.category) query = { Category: { $in: category } };
+      }
+
+      // Filter with only brand and category
       if (filter.brand && filter.category)
         query = {
           $and: [{ Brand: { $in: brand } }, { Category: { $in: category } }],
         };
-      if (brand || category) {
-        Product.find(query)
-          .sort("-CreatedAt")
-          .skip(skip)
-          .limit(limit)
-          .populate("Brand")
-          .populate("Category")
-          .populate("Images")
-          .populate("Product_specs")
-          .then((products) => {
-            Product.find(query)
-              .countDocuments()
-              .then((result) => {
-                res.json({
-                  success: true,
-                  data: products,
-                  navigate: {
-                    page: page,
-                    limit: limit,
-                    totalPage: Math.ceil(result / limit),
-                    productCount: result,
-                  },
-                });
+
+
+      // Handle filter and response data
+      Product.find(query)
+        .sort({...sortValue})
+        .skip(skip)
+        .limit(limit)
+        .populate("Brand")
+        .populate("Category")
+        .populate("Images")
+        .populate("Product_specs")
+        .then((products) => {
+          Product.find(query)
+            .countDocuments()
+            .then((result) => {
+              res.json({
+                success: true,
+                data: products,
+                navigate: {
+                  page: page,
+                  limit: limit,
+                  totalPage: Math.ceil(result / limit),
+                  productCount: result,
+                },
               });
-          })
-          .catch((error) => {
-            res.json({ success: false, data: [] });
-          });
-      } else res.json("Brand not found");
-    } else {
+            });
+        })
+        .catch((error) => {
+          res.json({ success: false, data: [] });
+        });
+
+
+    } else if (!filter) {
       Product.find()
-        .sort("-CreatedAt")
+        .sort(sortValue)
         .skip(skip)
         .limit(limit)
         .populate("Brand")
@@ -157,14 +182,15 @@ class ProductController {
         .populate("Images")
         .populate("Product_specs");
 
-      res.status(200).json(responseJSON("Get data product success !", product));
+      res.status(200).json(responseJSON("Get data product success !", product, true));
     } catch (error) {
       res
         .status(404)
         .json(
           responseJSON(
             "Cannot get data product with error: ${error.message}",
-            null
+            null,
+            false
           )
         );
     }
@@ -310,30 +336,40 @@ class ProductController {
   async search(req, res) {
     var keyword = req.query.keyword;
     var hidden = req.query.hidden;
-    if(hidden) {
+    if (hidden) {
       try {
         var Search_Product_Result = await Product.find({
           Name: { $regex: keyword, $options: "i" },
-        }).skip(0).limit(3).populate("Images").populate("Brand").populate("Category")
-        if (Search_Product_Result){
+        })
+          .skip(0)
+          .limit(3)
+          .populate("Images")
+          .populate("Brand")
+          .populate("Category");
+        if (Search_Product_Result) {
           var Search_Count_Product_Result = await Product.find({
             Name: { $regex: keyword, $options: "i" },
-          }).countDocuments()          
-          res.json({...responseJSON("Product find result: ", Search_Product_Result, true), ['count']: Search_Count_Product_Result});
-        }
-        else {
+          }).countDocuments();
+          res.json({
+            ...responseJSON(
+              "Product find result: ",
+              Search_Product_Result,
+              true
+            ),
+            ["count"]: Search_Count_Product_Result,
+          });
+        } else {
           res.json(responseJSON("Product find result: ", [], true));
         }
       } catch (error) {
         console.log(error);
         res.json(responseJSON("Product find had error: ", null, false));
       }
-    }
-    else {
+    } else {
       try {
         var Search_Product_Result = await Product.find({
           Name: { $regex: keyword, $options: "i" },
-        })
+        });
         if (Search_Product_Result)
           res.json(
             responseJSON("Product find result: ", Search_Product_Result, true)
@@ -346,8 +382,9 @@ class ProductController {
         res.json(responseJSON("Product find had error: ", null, false));
       }
     }
-
   }
+
+  async sortBy(req, res) {}
 }
 
 module.exports = new ProductController();
