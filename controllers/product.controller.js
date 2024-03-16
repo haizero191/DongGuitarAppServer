@@ -78,7 +78,9 @@ class ProductController {
         const brand = await Brand.find({ Name: { $in: filter.brand } })
           .select("_id")
           .lean();
-        query = { Brand: { $in: brand } };
+        if(brand) {
+          query = { Brand: { $in: brand } };
+        }
       }
 
       // Filter with only category
@@ -86,14 +88,32 @@ class ProductController {
         const category = await Category.find({ Name: { $in: filter.category } })
           .select("_id")
           .lean();
-        if (filter.category) query = { Category: { $in: category } };
+        
+        if(category) {
+          if (filter.category) query = { Category: { $in: category } };
+        }
       }
 
       // Filter with only brand and category
       if (filter.brand && filter.category)
-        query = {
-          $and: [{ Brand: { $in: brand } }, { Category: { $in: category } }],
-        };
+      {
+        const brand = await Brand.find({ Name: { $in: filter.brand } })
+          .select("_id")
+          .lean();
+        const category = await Category.find({ Name: { $in: filter.category } })
+        .select("_id")
+        .lean();
+
+        if(category && brand) {
+          query = {
+            $and: [{ Brand: { $in: brand } }, { Category: { $in: category } }],
+          };
+        }
+
+      }
+
+
+      
 
 
       // Handle filter and response data
