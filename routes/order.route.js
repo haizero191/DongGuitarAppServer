@@ -11,7 +11,12 @@ router.post('/create', OrderController.create);
 
 router.put('/update/:id', authMiddleWare, OrderController.update);
 
+router.use('/count', authMiddleWare, OrderController.count);
+
+router.use('/search', OrderController.search);
+
 router.use('/', authMiddleWare, OrderController.index);
+
 
 // router.delete('/delete', authMiddleWare, BrandController.delete);
 

@@ -21,6 +21,7 @@ const orderSchema = new mongoose.Schema({
   Code: { type: String, required: true },
   IsReview: { type: Boolean, default: false },
   CreatedAt: { type: Date, default: Date.now },
+  UpdateAt: { type: Date, default: Date.now },
 });
 
 const Order = mongoose.model("Order", orderSchema);
