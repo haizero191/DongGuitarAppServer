@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const featureSchema = new mongoose.Schema({
-  Name: { type: String, require: true },
+  Name: { type: String, require: true, lowercase: true },
   IsActive: { type: Boolean, default: false },
   Level: { type: Number, required: false, default: 0 },
   CreatedAt: { type: Date, default: Date.now },

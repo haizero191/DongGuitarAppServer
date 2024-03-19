@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const brandSchema = new mongoose.Schema({
-  Name: String,
+  Name: {type: String, lowercase: true},
   ImageUrl: String,
   Description: String,
   CreatedAt: { type: Date, default: Date.now },
