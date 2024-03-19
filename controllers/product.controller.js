@@ -74,7 +74,7 @@ class ProductController {
 
       // Filter with only brand
       if (filter.brand) {
-        const brand = await Brand.find({ Name: { $in: filter.brand } })
+        const brand = await Brand.find({ Name: { $in: filter.brand, $options: "i" } })
           .select("_id")
           .lean();
         if(brand) {
@@ -84,7 +84,7 @@ class ProductController {
 
       // Filter with only category
       if (filter.category) {
-        const category = await Category.find({ Name: { $in: filter.category } })
+        const category = await Category.find({ Name: { $in: filter.category, $options: "i" } })
           .select("_id")
           .lean();
         
