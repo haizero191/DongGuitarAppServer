@@ -95,8 +95,6 @@ class OrderController {
     if (code) query = { Code: code };
     if (phone) query = { Phone: phone };
 
-    console.log(code, phone);
-
     try {
       const Search_Order_Result = await Order.find(query)
         .sort("-CreateAt")

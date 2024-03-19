@@ -11,6 +11,11 @@ const orderSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Product",
   },
+
+  // Save product infomations ----------------
+  ProductName: { type: String, required: true },
+  BrandName: {type: String, required: true },
+  CategoryName: {},
   PaymentCost: { type: Number, required: true },
   Status: {
     type: String,

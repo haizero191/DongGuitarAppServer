@@ -8,6 +8,7 @@ const Category = require("../models/category.model.js");
 const { google } = require("googleapis");
 const GoogleCloud = require("../config/GoogleCloud");
 const Product_specs = require("../models/product_specs.model.js");
+const ProductFeature = require("../models/product_feature.model.js");
 
 class ProductController {
   async index(req, res) {
@@ -23,8 +24,6 @@ class ProductController {
       page = 1;
       limit = 9;
     }
-
-
 
     // Kiểm tra sort by
     if (filter && filter.sortBy) {
@@ -111,10 +110,6 @@ class ProductController {
         }
 
       }
-
-
-      
-
 
       // Handle filter and response data
       Product.find(query)
@@ -295,9 +290,10 @@ class ProductController {
         const driveIds = (await Image.find({ _id: { $in: imageIds } })).map(
           (image) => image.DriverId
         );
-        // Xóa hình ảnh và thông số kĩ thuật của sản phẩm
+        // Xóa hình ảnh và các thông tin liên quan của sản phẩm
         await Image.deleteMany({ _id: { $in: imageIds } });
         await Product_specs.deleteMany({ _id: productSpecsId });
+        await ProductFeature.deleteMany({ Product: product._id });
         // Xóa hình ảnh trong drive
         deleteFileDrive(driveIds);
       }
