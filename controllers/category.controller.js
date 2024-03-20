@@ -5,6 +5,7 @@ const responseJSON = require("../config/responseJSON");
 class CategoryController {
   index(req, res) {
     Category.find()
+      .populate("SubCategory")
       .then((category) => {
         res.json(responseJSON("Get categories success !", category, true));
       })
@@ -75,6 +76,27 @@ class CategoryController {
       res
         .status(201)
         .json(responseJSON("Categories updated failed", null, false));
+    }
+  }
+
+  async detail(req, res) {
+    try {
+      const { id } = req.params;
+      const category = await Category.findById(req.params.id)
+        .populate("SubCategory")
+
+
+      res.status(200).json(responseJSON("Get data category success !", category, true));
+    } catch (error) {
+      res
+        .status(404)
+        .json(
+          responseJSON(
+            "Cannot get data category with error: ${error.message}",
+            null,
+            false
+          )
+        );
     }
   }
 }

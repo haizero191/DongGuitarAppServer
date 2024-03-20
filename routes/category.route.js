@@ -9,7 +9,7 @@ router.put('/update/:id', authMiddleWare, CategoryController.update);
 
 router.delete('/delete', authMiddleWare, CategoryController.delete);
 
-// router.use('/detail/:id', ProductController.detail);
+router.get('/detail/:id', CategoryController.detail);
 
 router.use('/', CategoryController.index);
 

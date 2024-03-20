@@ -48,6 +48,7 @@ class ProductController {
           .populate("Category")
           .populate("Images")
           .populate("Product_specs")
+          .populate("SubCategory")
         if (Search_Product_Result) {
           var Search_Count_Product_Result = await Product.find({
             Name: { $regex: filter.search, $options: "i" },
@@ -120,6 +121,7 @@ class ProductController {
         .populate("Category")
         .populate("Images")
         .populate("Product_specs")
+        .populate("SubCategory")
         .then((products) => {
           Product.find(query)
             .countDocuments()
@@ -150,6 +152,7 @@ class ProductController {
         .populate("Category")
         .populate("Images")
         .populate("Product_specs")
+        .populate("SubCategory")
         .then((products) => {
           Product.find()
             .countDocuments()
@@ -195,7 +198,8 @@ class ProductController {
         .populate("Brand")
         .populate("Category")
         .populate("Images")
-        .populate("Product_specs");
+        .populate("Product_specs")
+        .populate("SubCategory")
 
       res.status(200).json(responseJSON("Get data product success !", product, true));
     } catch (error) {
@@ -228,9 +232,7 @@ class ProductController {
           responseJSON("Product updated success", Update_Product_Result, true)
         );
       } catch (error) {
-        res
-          .status(404)
-          .json(responseJSON("Product updated failed", null, false));
+        res.json(responseJSON("Product updated failed", error, false));
       }
     }
   }
@@ -361,7 +363,8 @@ class ProductController {
           .limit(3)
           .populate("Images")
           .populate("Brand")
-          .populate("Category");
+          .populate("Category")
+          .populate("SubCategory")
         if (Search_Product_Result) {
           var Search_Count_Product_Result = await Product.find({
             Name: { $regex: keyword, $options: "i" },

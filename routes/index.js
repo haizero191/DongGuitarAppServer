@@ -5,40 +5,45 @@ const authRouter = require("./auth.route.js");
 const imageRouter = require("./image.route.js");
 const productSpecsRouter = require("./product_specs.route.js");
 const senderRouter = require("./sender.route.js");
-const orderRouter = require("./order.route.js")
-const featureRouter = require("./feature.route.js")
-const productFeatureRouter = require("./product_feature.route.js")
+const orderRouter = require("./order.route.js");
+const featureRouter = require("./feature.route.js");
+const productFeatureRouter = require("./product_feature.route.js");
+const subCategoryRouter = require("./sub_category.js");
+
+
 function route(app) {
-  
-    // Product routers
-    app.use('/api/products', productRouter)
+  // Product routers
+  app.use("/api/products", productRouter);
 
-    // Category routers
-    app.use('/api/categories', categoryRouter)
+  // Category routers
+  app.use("/api/categories", categoryRouter);
 
-    // Brand routes
-    app.use('/api/brands', brandRouter)
+  // Sub-category routes
+  app.use("/api/sub-categories", subCategoryRouter);
 
-    // Authentication routes
-    app.use('/api/auth', authRouter)
+  // Brand routes
+  app.use("/api/brands", brandRouter);
 
-    // Images routes
-    app.use('/api/images', imageRouter)
+  // Authentication routes
+  app.use("/api/auth", authRouter);
 
-    //Product_specs routers
-    app.use('/api/product_specs', productSpecsRouter)
+  // Images routes
+  app.use("/api/images", imageRouter);
 
-    // Email sender routes
-    app.use('/api/sender', senderRouter)
+  //Product_specs routers
+  app.use("/api/product_specs", productSpecsRouter);
 
-    // Order routes
-    app.use('/api/orders', orderRouter)
+  // Email sender routes
+  app.use("/api/sender", senderRouter);
 
-    // Featured routes
-    app.use('/api/features', featureRouter)
+  // Order routes
+  app.use("/api/orders", orderRouter);
 
-    // Featured Product routes
-    app.use('/api/product-feature', productFeatureRouter)
+  // Featured routes
+  app.use("/api/features", featureRouter);
+
+  // Featured Product routes
+  app.use("/api/product-feature", productFeatureRouter);
 }
 
 module.exports = route;

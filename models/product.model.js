@@ -11,13 +11,17 @@ const productSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Brand",
     lowercase: true,
-    trim: true
+    trim: true,
   },
   Category: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Category",
     lowercase: true,
-    trim: true
+    trim: true,
+  },
+  SubCategory: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "sub_category"
   },
   Video: { type: String, required: false },
   Images: [

@@ -89,14 +89,14 @@ const adminGetOrderMail = (order) => {
     port: 587,
     secure: false,
     auth: {
-      user: "haizero191@gmail.com",
-      pass: "ocjl bfqc ilbk lrip",
+      user: "donghuuduc0101@gmail.com",
+      pass: "pvav ciyr zzkk jnhm",
     },
     tls: { rejectUnauthorized: false },
   });
   let mailOptions = {
-    from: "haizero191@gmail.com",
-    to: "haizero191@gmail.com",
+    from: "donghuuduc0101@gmail.com",
+    to: "donghuuduc0101@gmail.com",
     subject: "Đồng Guitar Website - Xác nhận đơn hàng mới",
     html: orderConfirmForm(order),
     priority: 'high'

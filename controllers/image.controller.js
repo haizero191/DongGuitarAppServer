@@ -50,7 +50,7 @@ class ImageController {
       const fileMetadatas = req.files.map((fileData) => {
         return {
           name: fileData.originalname, // Hoặc cung cấp tên mong muốn khác
-          parents: ["1z9Uh2LaMxPQpuqXZfSwChSx9rOf0Ry2F"], // Thay thế bằng ID thư mục đích
+          parents: ["1nw7uIqAe1_cY7Ga_CX24P2IeAZEp0s4f"], // Thay thế bằng ID thư mục đích
         };
       });
       // Sử dụng Multer và chuẩn bị luồng dữ liệu có thể đọc (tùy chọn)
