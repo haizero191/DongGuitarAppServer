@@ -9,6 +9,7 @@ const { google } = require("googleapis");
 const GoogleCloud = require("../config/GoogleCloud");
 const Product_specs = require("../models/product_specs.model.js");
 const ProductFeature = require("../models/product_feature.model.js");
+const SubCategory = require("../models/sub_category.model.js");
 
 class ProductController {
   async index(req, res) {
@@ -68,6 +69,7 @@ class ProductController {
       }
     } else if (filter) {
       var query = {};
+      var queryArr = []
 
       // Filter with only brand
       if (filter.brand) {
@@ -75,7 +77,7 @@ class ProductController {
           .select("_id")
           .lean();
         if (brand) {
-          query = { Brand: { $in: brand } };
+          queryArr.push({ Brand: { $in: brand } })
         }
       }
 
@@ -86,25 +88,44 @@ class ProductController {
           .lean();
 
         if (category) {
-          if (filter.category) query = { Category: { $in: category } };
+          if (filter.category){
+            queryArr.push({ Category: { $in: category } })
+          } 
         }
       }
+
+      // Filter with only category
+      if (filter.subCategory) {
+        const subCate = await SubCategory.find({ Name: { $in: filter.subCategory } })
+          .select("_id")
+          .lean();
+  
+        if (subCate) {
+          if (filter.subCategory){
+            queryArr.push({ SubCategory: { $in: subCate } })
+          } 
+        }
+      }
+
+      query = {
+        $and: queryArr,
+      };
 
       // Filter with only brand and category
-      if (filter.brand && filter.category) {
-        const brand = await Brand.find({ Name: { $in: filter.brand } })
-          .select("_id")
-          .lean();
-        const category = await Category.find({ Name: { $in: filter.category } })
-          .select("_id")
-          .lean();
+      // if (filter.brand && filter.category) {
+      //   const brand = await Brand.find({ Name: { $in: filter.brand } })
+      //     .select("_id")
+      //     .lean();
+      //   const category = await Category.find({ Name: { $in: filter.category } })
+      //     .select("_id")
+      //     .lean();
 
-        if (category && brand) {
-          query = {
-            $and: [{ Brand: { $in: brand } }, { Category: { $in: category } }],
-          };
-        }
-      }
+      //   if (category && brand) {
+         
+      //   }
+      // }
+
+      
 
       // Handle filter and response data
       Product.find(query)
