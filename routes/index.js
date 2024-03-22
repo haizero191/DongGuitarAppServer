@@ -44,6 +44,8 @@ function route(app) {
 
   // Featured Product routes
   app.use("/api/product-feature", productFeatureRouter);
+
+
 }
 
 module.exports = route;

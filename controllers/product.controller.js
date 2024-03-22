@@ -12,11 +12,10 @@ const ProductFeature = require("../models/product_feature.model.js");
 
 class ProductController {
   async index(req, res) {
-
     // init variables
     let { page, limit, filter } = req.query;
     let skip = 0;
-    var sortValue = {CreateAt : -1}
+    var sortValue = { CreateAt: -1 };
 
     // Kiểm tra pagination
     if (page && limit) skip = (page - 1) * limit;
@@ -28,27 +27,24 @@ class ProductController {
     // Kiểm tra sort by
     if (filter && filter.sortBy) {
       if (filter.sortBy === "incs") {
-        sortValue['SellingPrice'] = 1
-      }
-      else if(filter.sortBy === "desc") {
-        sortValue['SellingPrice'] = -1
+        sortValue["SellingPrice"] = 1;
+      } else if (filter.sortBy === "desc") {
+        sortValue["SellingPrice"] = -1;
       }
     }
-
 
     if (filter && filter.search) {
       try {
         var Search_Product_Result = await Product.find({
           Name: { $regex: filter.search, $options: "i" },
         })
-          .sort({...sortValue})
+          .sort({ ...sortValue })
           .skip(skip)
           .limit(limit)
           .populate("Brand")
           .populate("Category")
           .populate("Images")
-          .populate("Product_specs")
-          .populate("SubCategory")
+          .populate("SubCategory");
         if (Search_Product_Result) {
           var Search_Count_Product_Result = await Product.find({
             Name: { $regex: filter.search, $options: "i" },
@@ -78,7 +74,7 @@ class ProductController {
         const brand = await Brand.find({ Name: { $in: filter.brand } })
           .select("_id")
           .lean();
-        if(brand) {
+        if (brand) {
           query = { Brand: { $in: brand } };
         }
       }
@@ -88,39 +84,36 @@ class ProductController {
         const category = await Category.find({ Name: { $in: filter.category } })
           .select("_id")
           .lean();
-        
-        if(category) {
+
+        if (category) {
           if (filter.category) query = { Category: { $in: category } };
         }
       }
 
       // Filter with only brand and category
-      if (filter.brand && filter.category)
-      {
+      if (filter.brand && filter.category) {
         const brand = await Brand.find({ Name: { $in: filter.brand } })
           .select("_id")
           .lean();
         const category = await Category.find({ Name: { $in: filter.category } })
-        .select("_id")
-        .lean();
+          .select("_id")
+          .lean();
 
-        if(category && brand) {
+        if (category && brand) {
           query = {
             $and: [{ Brand: { $in: brand } }, { Category: { $in: category } }],
           };
         }
-
       }
 
       // Handle filter and response data
       Product.find(query)
-        .sort({...sortValue})
+        .sort({ ...sortValue })
         .skip(skip)
         .limit(limit)
         .populate("Brand")
         .populate("Category")
         .populate("Images")
-        .populate("Product_specs")
         .populate("SubCategory")
         .then((products) => {
           Product.find(query)
@@ -141,8 +134,6 @@ class ProductController {
         .catch((error) => {
           res.json({ success: false, data: [] });
         });
-
-
     } else if (!filter) {
       Product.find()
         .sort(sortValue)
@@ -151,7 +142,6 @@ class ProductController {
         .populate("Brand")
         .populate("Category")
         .populate("Images")
-        .populate("Product_specs")
         .populate("SubCategory")
         .then((products) => {
           Product.find()
@@ -198,10 +188,11 @@ class ProductController {
         .populate("Brand")
         .populate("Category")
         .populate("Images")
-        .populate("Product_specs")
-        .populate("SubCategory")
+        .populate("SubCategory");
 
-      res.status(200).json(responseJSON("Get data product success !", product, true));
+      res
+        .status(200)
+        .json(responseJSON("Get data product success !", product, true));
     } catch (error) {
       res
         .status(404)
@@ -364,7 +355,7 @@ class ProductController {
           .populate("Images")
           .populate("Brand")
           .populate("Category")
-          .populate("SubCategory")
+          .populate("SubCategory");
         if (Search_Product_Result) {
           var Search_Count_Product_Result = await Product.find({
             Name: { $regex: keyword, $options: "i" },

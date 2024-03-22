@@ -7,13 +7,11 @@ router.post('/create', authMiddleWare, ProductSpecsController.create);
 
 router.put('/update/:id', authMiddleWare, ProductSpecsController.update);
 
-// router.delete('/delete', ProductSpecsController.delete);
+router.delete('/delete',authMiddleWare, ProductSpecsController.delete);
 
-// router.get('/detail/:id', ProductSpecsController.detail);
+router.delete('/deleteWithProductId', ProductSpecsController.deleteWithProductId);
 
-// router.get('/', ProductSpecsController.index);
-
-
+router.get('/', ProductSpecsController.index);
 
 
 module.exports = router;

@@ -12,6 +12,6 @@ const productFeatureSchema = new mongoose.Schema({
   CreatedAt: { type: Date, default: Date.now },
 });
 
-const ProductFeature = mongoose.model('products-features', productFeatureSchema);
+const ProductFeature = mongoose.model('Products-Features', productFeatureSchema);
 
 module.exports = ProductFeature;

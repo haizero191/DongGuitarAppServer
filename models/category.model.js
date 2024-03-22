@@ -5,7 +5,7 @@ const categorySchema = new mongoose.Schema({
   CreatedAt: { type: Date, default: Date.now },
   SubCategory: [{
     type: mongoose.Schema.Types.ObjectId,
-    ref: "sub_category",
+    ref: "Sub_category",
   }]
 });
 

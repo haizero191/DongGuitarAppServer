@@ -21,7 +21,7 @@ const productSchema = new mongoose.Schema({
   },
   SubCategory: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "sub_category"
+    ref: "Sub_category"
   },
   Video: { type: String, required: false },
   Images: [
@@ -30,10 +30,6 @@ const productSchema = new mongoose.Schema({
       ref: "Image",
     },
   ],
-  Product_specs: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Product_specs",
-  },
   CreatedAt: { type: Date, default: Date.now },
 });
 
