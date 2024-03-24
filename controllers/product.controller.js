@@ -111,22 +111,6 @@ class ProductController {
         $and: queryArr,
       };
 
-      // Filter with only brand and category
-      // if (filter.brand && filter.category) {
-      //   const brand = await Brand.find({ Name: { $in: filter.brand } })
-      //     .select("_id")
-      //     .lean();
-      //   const category = await Category.find({ Name: { $in: filter.category } })
-      //     .select("_id")
-      //     .lean();
-
-      //   if (category && brand) {
-         
-      //   }
-      // }
-
-      
-
       // Handle filter and response data
       Product.find(query)
         .sort({ ...sortValue })
@@ -230,7 +214,6 @@ class ProductController {
   async update(req, res) {
     const productId = req.params.id;
     const productData = req.body;
-    console.log(req.body);
     if (Object.keys(productData).length === 0) {
       res.status(404).json(responseJSON("Product updated failed", null, false));
     } else {

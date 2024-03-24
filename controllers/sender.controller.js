@@ -10,7 +10,6 @@ const responseJSON = require("../config/responseJSON");
 
 class SenderController {
   index(req, res) {
-
     res.json("email send success")
   }
 }
