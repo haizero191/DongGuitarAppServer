@@ -141,7 +141,6 @@ class ProductController {
         });
     } else if (!filter) {
       Product.find()
-        .sort(sortValue)
         .skip(skip)
         .limit(limit)
         .populate("Brand")
