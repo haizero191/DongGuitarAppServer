@@ -25,15 +25,6 @@ class ProductController {
       limit = 9;
     }
 
-    // Kiểm tra sort by
-    if (filter && filter.sortBy) {
-      if (filter.sortBy === "incs") {
-        sortValue["SellingPrice"] = 1;
-      } else if (filter.sortBy === "desc") {
-        sortValue["SellingPrice"] = -1;
-      }
-    }
-
     if (filter && filter.search) {
       try {
         var Search_Product_Result = await Product.find({
@@ -69,7 +60,7 @@ class ProductController {
       }
     } else if (filter) {
       var query = {};
-      var queryArr = []
+      var queryArr = [];
 
       // Filter with only brand
       if (filter.brand) {
@@ -77,7 +68,7 @@ class ProductController {
           .select("_id")
           .lean();
         if (brand) {
-          queryArr.push({ Brand: { $in: brand } })
+          queryArr.push({ Brand: { $in: brand } });
         }
       }
 
@@ -88,29 +79,44 @@ class ProductController {
           .lean();
 
         if (category) {
-          if (filter.category){
-            queryArr.push({ Category: { $in: category } })
-          } 
+          if (filter.category) {
+            queryArr.push({ Category: { $in: category } });
+          }
         }
       }
 
       // Filter with only category
       if (filter.subCategory) {
-        const subCate = await SubCategory.find({ Name: { $in: filter.subCategory } })
+        const subCate = await SubCategory.find({
+          Name: { $in: filter.subCategory },
+        })
           .select("_id")
           .lean();
-  
+
         if (subCate) {
-          if (filter.subCategory){
-            queryArr.push({ SubCategory: { $in: subCate } })
-          } 
+          if (filter.subCategory) {
+            queryArr.push({ SubCategory: { $in: subCate } });
+          }
         }
       }
 
-      query = {
-        $and: queryArr,
-      };
+      // Kiểm tra sort by
+      if (filter.sortBy) {
+        if (filter.sortBy === "incs") {
+          sortValue["SellingPrice"] = 1;
+        } else if (filter.sortBy === "desc") {
+          sortValue["SellingPrice"] = -1;
+        }
+      }
 
+      if(queryArr.length > 0) {
+        query = {
+          $and: queryArr,
+        };
+      }
+
+
+      
       // Handle filter and response data
       Product.find(query)
         .sort({ ...sortValue })
@@ -137,6 +143,7 @@ class ProductController {
             });
         })
         .catch((error) => {
+          console.log(error)
           res.json({ success: false, data: [] });
         });
     } else if (!filter) {
